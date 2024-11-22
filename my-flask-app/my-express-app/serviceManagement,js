@@ -1,0 +1,16 @@
+const cron = require('node-cron');
+const { exec } = require('child_process');
+
+// Function to restart a service
+const restartService = (serviceName) => {
+    exec(`net stop ${serviceName} && net start ${serviceName}`, (error) => {
+        if (error) {
+            console.error(`Error restarting service ${serviceName}: ${error}`);
+            return;
+        }
+        console.log(`Service ${serviceName} restarted successfully!`);
+    });
+};
+
+// Schedule the service restart to run weekly on Sundays at 2 AM
+cron.schedule('0 2 * * 0', () => restartService('YourServiceName'));
